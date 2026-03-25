@@ -131,32 +131,6 @@ void particle_laws(struct particle *p) {
   }
 }
 
-enum exception_codes { NO_RESULT = 0, INVALID_TYPE = 1, PLACEHOLDER_CODE = 2 };
-
-static jmp_buf s_jumpBuffer;
-
-void buf_helper() {
-  if (setjmp(s_jumpBuffer) == 0) {
-    longjmp(s_jumpBuffer, 1);
-  }
-}
-
-void jump_exception(int status) {
-  buf_helper();
-
-  switch (status) {
-  case NO_RESULT:
-    printf("Exit code [%d]: length of input was invalid", status);
-    break;
-  case INVALID_TYPE:
-    printf("Exit code [%d]: count_particles() was left unparsed", status);
-    break;
-  case PLACEHOLDER_CODE:
-  default: ///< Cases that haven't been specified, switch-case unfinished
-    printf("Exit code [%d]: undefined behavior", status);
-  }
-}
-
 /**
  * @brief Reads initial particle count from stdin.
  * @return Number of particles to spawn (minimum 1).
