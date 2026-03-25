@@ -1,3 +1,5 @@
+#define _DEFAULT_SOURCE
+
 #include "../include/vector.h"
 #include <setjmp.h>
 #include <stdbool.h>
