@@ -1,0 +1,2 @@
+- [] Set void parameters to void methods (only for no arguments-based methods)
+- [] Refactor error handling logic for count_particles() due to inconsistencies/logical issues.
