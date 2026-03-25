@@ -133,8 +133,14 @@ enum exception_codes { NO_RESULT = 0, INVALID_TYPE = 1, PLACEHOLDER_CODE = 2 };
 
 static jmp_buf s_jumpBuffer;
 
+void buf_helper() {
+  if (setjmp(s_jumpBuffer) == 0) {
+    longjmp(s_jumpBuffer, 1);
+  }
+}
+
 void jump_exception(int status) {
-  longjmp(s_jumpBuffer, status);
+  buf_helper();
 
   switch (status) {
   case NO_RESULT:
