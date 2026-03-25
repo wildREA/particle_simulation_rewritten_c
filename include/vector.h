@@ -1,3 +1,6 @@
+#ifndef VECTOR_H
+#define VECTOR_H
+
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -71,3 +74,5 @@ void vector_clear(struct particle_vector *v);
  * @param v Vector instance.
  */
 void vector_free(struct particle_vector *v);
+
+#endif
