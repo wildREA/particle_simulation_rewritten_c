@@ -177,9 +177,6 @@ int count_particles() {
   }
   amount = parsed;
 
-  printf("\ncount: %d\n", amount);
-  sleep(1);
-
   return amount;
 }
 
@@ -302,8 +299,6 @@ int main() {
     elapsed += dt;
     running = (elapsed < 10.0f); // 10 / 0.1 = 100
   }
-
-  printf("final count: %zd\n", particles.size);
 
   vector_free(&particles);
 
