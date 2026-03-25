@@ -89,22 +89,29 @@ void print_screen() {
 }
 
 /**
- * @brief Checks whether any two particles occupy the same exact position.
- * @return true if at least one overlap exists; otherwise false.
+ * @brief Counts overlapping particle pairs in rendered grid coordinates.
+ * @return Number of unique overlapping pairs.
  *
- * @warning Comparison uses exact float equality for x/y.
+ * Overlap is measured the same way particles are rendered: by integer cell.
  */
-bool is_particle_overlapping() {
+size_t count_particle_overlaps() {
+  size_t overlaps = 0;
+
   for (size_t i = 0; i < particles.size; i++) {
+    int coli = (int)particles.data[i].x;
+    int rowi = (int)particles.data[i].y;
+
     for (size_t j = i + 1; j < particles.size; j++) {
-      if (particles.data[i].x == particles.data[j].x &&
-          particles.data[i].y == particles.data[j].y) {
-        return true;
+      int colj = (int)particles.data[j].x;
+      int rowj = (int)particles.data[j].y;
+
+      if (coli == colj && rowi == rowj) {
+        overlaps++;
       }
     }
   }
 
-  return false;
+  return overlaps;
 }
 
 /**
@@ -278,10 +285,14 @@ int main() {
       update(p, dt);
     }
 
-    if (is_particle_overlapping()) {
-      vector_reserve(&particles, particles.size + 2);
-      for (unsigned i = 0; i < 2; i++, init_particle((int)particles.size))
-        ;
+    size_t overlap_count = count_particle_overlaps();
+    if (overlap_count > 0) {
+      size_t extra_particles = overlap_count * 2;
+      vector_reserve(&particles, particles.size + extra_particles);
+
+      for (size_t i = 0; i < extra_particles; i++) {
+        init_particle((int)particles.size);
+      }
     }
 
     print_screen();
