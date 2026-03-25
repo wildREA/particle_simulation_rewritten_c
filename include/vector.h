@@ -9,10 +9,13 @@
  * @brief Dynamic array interface for `struct particle`.
  *
  * C rewrite note:
- * - This header provides a minimal vector-like API replacing C++ container usage.
+ * - This header provides a minimal vector-like API replacing C++ container
+ * usage.
  *
- * @todo Add explicit error-reporting strategy (error codes/logging) for allocation failures.
- * @todo Add capacity-shrinking API if memory reclamation during runtime is required.
+ * @todo Add explicit error-reporting strategy (error codes/logging) for
+ * allocation failures.
+ * @todo Add capacity-shrinking API if memory reclamation during runtime is
+ * required.
  */
 
 /**
@@ -51,7 +54,8 @@ struct particle_vector {
  * @brief Ensures storage can hold at least `new_capacity` particles.
  * @param v Vector instance.
  * @param new_capacity Requested minimum capacity.
- * @return `true` on success or if no growth is needed; `false` on allocation failure.
+ * @return `true` on success or if no growth is needed; `false` on allocation
+ * failure.
  */
 bool vector_reserve(struct particle_vector *v, size_t new_capacity);
 
