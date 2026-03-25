@@ -239,9 +239,10 @@ void sleep_for(int milliseconds) {
 #endif
     break;
   case OS_POSIX:
-  default:
-    sleep(milliseconds * 0.001);
+  default: {
+    usleep(milliseconds * 1000);
     break;
+  }
   }
 }
 
@@ -301,6 +302,8 @@ int main() {
     elapsed += dt;
     running = (elapsed < 10.0f); // 10 / 0.1 = 100
   }
+
+  printf("final count: %zd\n", particles.size);
 
   vector_free(&particles);
 
