@@ -1,7 +1,9 @@
 #define _DEFAULT_SOURCE
 
+#include "../include/main.h"
+#include "../include/exceptions.h"
 #include "../include/vector.h"
-#include <setjmp.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -139,22 +141,37 @@ void particle_laws(struct particle *p) {
  */
 int count_particles() {
   printf("1) Singular\n2) Multiple\nAmount of particles: ");
-  char input[32] = {0};
+
+  char input[16] = {0};
+  int amount = 1;
+
   if (!fgets(input, sizeof(input), stdin)) {
-    return 1;
+    jmp_exception(EOF_FAILURE);
+    return 0;
   }
 
-  int amount = 1;
-  if (strlen(input) == 0) {
-    jump_exception(0);
+  if (input[0] == '\0') {
+    jmp_exception(NO_RESULT);
+    return 0;
+  }
+
+  for (int i = 0; input[i] != '\0'; i++) {
+    if (!isdigit((unsigned char)input[i])) {
+      jmp_exception(INVALID_TYPE);
+      return 0;
+    }
   }
 
   int parsed = atoi(input);
-  if (parsed >= 1 && parsed <= 2) {
-    amount = parsed;
-  } else {
-    jump_exception(1);
+
+  if (!(0 < parsed) && !(parsed < 3)) {
+    jmp_exception(OUT_OF_BOUNDS);
+    return 0;
   }
+  amount = parsed;
+
+  printf("\ncount: %d\n", amount);
+  sleep(1);
 
   return amount;
 }
@@ -181,14 +198,20 @@ void init_particle(int index) {
 /**
  * @brief Prompts user for particle count, then initializes that many particles.
  */
-void draw_particles_by_amount() {
+bool draw_particles_by_amount() {
   int count = count_particles();
+  if (count < 1) {
+    return false;
+  }
+
   vector_clear(&particles);
   vector_reserve(&particles, (size_t)count);
 
   for (int i = 0; i < count; i++) {
     init_particle(i);
   }
+
+  return true;
 }
 
 enum operating_system { OS_WINDOWS = 0, OS_POSIX = 1 };
@@ -240,7 +263,10 @@ int main() {
   float elapsed = 0.0f; // simulated time
   bool running = true;
 
-  draw_particles_by_amount();
+  if (!draw_particles_by_amount()) {
+    vector_free(&particles);
+    return EXIT_FAILURE;
+  }
 
   while (running) {
     system("clear");
