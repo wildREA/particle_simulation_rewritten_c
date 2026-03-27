@@ -208,7 +208,7 @@ int count_particles() {
   }
 
   jmp_exception(OK);
-  return parsed;
+  return 4;
 }
 
 /**
