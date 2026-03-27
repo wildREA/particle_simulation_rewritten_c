@@ -169,35 +169,38 @@ int interceptStreamParse(char *input) {
 int count_particles() {
   printf("1) Singular\n2) Multiple\nAmount of particles: ");
 
-  char input[16] = {0};
-  int amount = 1;
+  int buff_size = 2;
+  char input[32] = {0};
 
+  // Parsed stream incorrectly
   if (!fgets(input, sizeof(input), stdin)) {
     jmp_exception(EOF_FAILURE);
-    return 0;
   }
 
-  if (input[0] == '\0') {
+  /// Empty string
+  if (input[0] == '\0' || input[0] == '\n') {
     jmp_exception(NO_RESULT);
-    return 0;
   }
 
-  for (int i = 0; input[i] != '\0'; i++) {
-    if (!isdigit((unsigned char)input[i])) {
-      jmp_exception(INVALID_TYPE);
-      return 0;
-    }
+  /// Parsed stream length
+  if (interceptStreamParse(input)) {
+    jmp_exception(INVALID_LENGTH);
   }
 
-  int parsed = atoi(input);
+  /// Required as digit
+  if (!isdigit((unsigned char)input[0])) {
+    jmp_exception(INVALID_TYPE);
+  }
 
-  if (!(0 < parsed) && !(parsed < 3)) {
+  int parsed = input[0] - '0'; ///< char to integer through normalization
+
+  /// Digit within range (1-2)
+  if (parsed < 1 || parsed > buff_size) {
     jmp_exception(OUT_OF_BOUNDS);
-    return 0;
   }
-  amount = parsed;
 
-  return amount;
+  jmp_exception(OK);
+  return parsed;
 }
 
 /**
