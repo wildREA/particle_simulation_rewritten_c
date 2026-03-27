@@ -137,6 +137,29 @@ void particle_laws(struct particle *p) {
   }
 }
 
+int interceptStreamParse(char *input) {
+  size_t len = strcspn(input, "\n");
+  bool got_newline = (input[len] == '\n');
+
+  /// Single digit
+  if (got_newline) {
+    input[len] = '\0';
+  } else {
+    int ch;
+    while ((ch = getchar()) != '\n' && ch != EOF) {
+    }
+    jmp_exception(INVALID_LENGTH);
+    return 1;
+  }
+
+  if (len != 1) {
+    jmp_exception(INVALID_LENGTH);
+    return 1;
+  }
+
+  return 0;
+}
+
 /**
  * @brief Reads initial particle count from stdin.
  * @return Number of particles to spawn (minimum 1).
