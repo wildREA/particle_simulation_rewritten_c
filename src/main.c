@@ -318,7 +318,7 @@ int main() {
 
     size_t overlap_count = count_particle_overlaps();
     if (overlap_count > 0) {
-      size_t extra_particles = overlap_count + 2;
+      size_t extra_particles = overlap_count * 2;
       vector_reserve(&particles, particles.size + extra_particles);
 
       for (size_t i = 0; i < extra_particles; i++) {
