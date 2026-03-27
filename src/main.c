@@ -39,6 +39,14 @@ char screen[width][height];
 static struct particle_vector particles = {0};
 
 /**
+ * @brief Seeds the pseudo-random generator once per process.
+ */
+void seed_random() {
+  unsigned int seed = (unsigned int)time(NULL) ^ (unsigned int)getpid();
+  srand(seed);
+}
+
+/**
  * @brief Generates a random float in [min, max].
  * @param min Lower bound.
  * @param max Upper bound.
@@ -290,6 +298,8 @@ int main() {
   float dt = 0.1f;      // step size
   float elapsed = 0.0f; // simulated time
   bool running = true;
+
+  seed_random();
 
   if (!draw_particles_by_amount()) {
     vector_free(&particles);
