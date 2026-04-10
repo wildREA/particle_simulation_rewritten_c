@@ -73,7 +73,7 @@ void init_screen() {
  * @brief Draws one particle into the screen buffer if in bounds.
  * @param p Particle to draw.
  */
-void draw_particle(struct particle p) {
+void draw_particle(particle_t p) {
   int col = (int)p.x;
   int row = (int)p.y;
 
@@ -127,7 +127,7 @@ size_t count_particle_overlaps() {
  *
  * Velocity is inverted and damped by factor `0.7` on collision.
  */
-void particle_laws(struct particle *p) {
+void particle_laws(particle_t *p) {
   if (p->x < 0.0f) {
     p->x = 0.0f;
     p->vx *= -0.7f;

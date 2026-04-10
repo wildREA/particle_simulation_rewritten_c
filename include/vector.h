@@ -28,13 +28,15 @@
  * @var particle::vx Horizontal velocity.
  * @var particle::vy Vertical velocity.
  */
-struct particle {
+typedef struct particle {
   char emitter;
   float x;
   float y;
   float vx;
   float vy;
-};
+} particle_t;
+
+void draw_particle(particle_t);
 
 /**
  * @struct particle_vector
