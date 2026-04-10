@@ -249,31 +249,6 @@ bool draw_particles_by_amount() {
   return true;
 }
 
-enum operating_system { OS_WINDOWS = 0, OS_POSIX = 1 };
-
-int detect_operating_system() {
-#ifdef _WIN32
-  return OS_WINDOWS;
-#else
-  return OS_POSIX;
-#endif
-}
-
-void sleep_for(int milliseconds) {
-  switch (detect_operating_system()) {
-  case OS_WINDOWS:
-#ifdef _WIN32
-    Sleep((DWORD)milliseconds);
-#endif
-    break;
-  case OS_POSIX:
-  default: {
-    usleep(milliseconds * 1000);
-    break;
-  }
-  }
-}
-
 /**
  * @brief Advances one particle by a fixed time step.
  * @param p Particle to update.
