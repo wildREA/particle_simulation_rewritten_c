@@ -2,11 +2,17 @@ stages:
   - build
   - release
 
+default:
+  image: ubuntu:24.04
+
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 build_linux:
   stage: build
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends cmake build-essential
   script:
     - cmake -S . -B build/build-linux
     - cmake --build build/build-linux
