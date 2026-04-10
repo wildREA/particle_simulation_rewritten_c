@@ -25,6 +25,9 @@ build_linux:
 
 build_windows:
   stage: build
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends cmake ninja-build mingw-w64
   script:
     - cmake -S . -B build/build-win -G Ninja -DCMAKE_TOOLCHAIN_FILE=build/toolchain-mingw64.cmake
     - cmake --build build/build-win
