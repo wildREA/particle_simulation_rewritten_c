@@ -2,6 +2,7 @@
 
 #include "../include/main.h"
 #include "../include/exceptions.h"
+#include "../include/posix_compatability.h"
 #include "../include/vector.h"
 #include <ctype.h>
 #include <stdbool.h>
@@ -282,7 +283,7 @@ int main() {
   }
 
   while (running) {
-    system("clear");
+    clear_terminal();
     init_screen();
 
     for (size_t i = 0; i < particles.size; i++) {
