@@ -146,6 +146,11 @@ void particle_laws(particle_t *p) {
   }
 }
 
+/**
+ * @brief Validates single-character numeric input and trims newline.
+ * @param input Mutable input buffer from `fgets`.
+ * @return `0` when parsing is valid; `1` when an input rule is violated.
+ */
 int interceptStreamParse(char *input) {
   size_t len = strcspn(input, "\n");
   bool got_newline = (input[len] == '\n');

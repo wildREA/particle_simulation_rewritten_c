@@ -3,10 +3,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @file exceptions.c
+ * @brief Error dispatch implementation for process-terminating statuses.
+ */
+
+/**
+ * @brief Shared jump target for non-local error flow.
+ */
 static jmp_buf s_jmp_buf;
 
+/**
+ * @brief Performs long jump to the shared jump buffer.
+ */
 void buf_helper() { longjmp(s_jmp_buf, 1); }
 
+/**
+ * @brief Emits status-specific error messages and exits when non-OK.
+ * @param status Exception code indicating failure type.
+ */
 void jmp_exception(exception_codes status) {
   switch (status) {
   case OK:

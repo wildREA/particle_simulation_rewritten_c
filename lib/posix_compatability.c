@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/**
+ * @file posix_compatability.c
+ * @brief OS-dependent terminal and sleep helpers.
+ */
+
+/**
+ * @brief Returns the active operating system family.
+ * @return One value from `enum operating_system`.
+ */
 int detect_operating_system() {
 #ifdef _WIN32
   return OS_WINDOWS;
@@ -10,6 +19,9 @@ int detect_operating_system() {
 #endif
 }
 
+/**
+ * @brief Clears the terminal using platform-appropriate command.
+ */
 void clear_terminal() {
   switch (detect_operating_system()) {
   case OS_WINDOWS:
@@ -24,6 +36,13 @@ void clear_terminal() {
   }
 }
 
+/**
+ * @brief Suspends execution for a number of milliseconds.
+ * @param milliseconds Delay duration in milliseconds.
+ *
+ * sleep() is used over Sleep() due to cross-compilation from Linux.
+ * Linux does not have Windows SDKs.
+ */
 void sleep_for(int milliseconds) {
   switch (detect_operating_system()) {
   case OS_WINDOWS:
