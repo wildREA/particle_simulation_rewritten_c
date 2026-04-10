@@ -3,7 +3,7 @@ stages:
   - release
 
 default:
-  image: ubuntu:24.04
+  image: archlinux:latest
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
@@ -11,8 +11,7 @@ variables:
 build_linux:
   stage: build
   before_script:
-    - apt-get update
-    - apt-get install -y --no-install-recommends cmake build-essential
+    - pacman -Sy --noconfirm --needed cmake base-devel
   script:
     - cmake -S . -B build/build-linux
     - cmake --build build/build-linux
@@ -26,8 +25,7 @@ build_linux:
 build_windows:
   stage: build
   before_script:
-    - apt-get update
-    - apt-get install -y --no-install-recommends cmake ninja-build mingw-w64
+    - pacman -Sy --noconfirm -needed cmake ninja mingw-w64-gcc
   script:
     - cmake -S . -B build/build-win -G Ninja -DCMAKE_TOOLCHAIN_FILE=build/toolchain-mingw64.cmake
     - cmake --build build/build-win
