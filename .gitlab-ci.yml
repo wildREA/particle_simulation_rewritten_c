@@ -1,0 +1,53 @@
+stages:
+	- build
+	- release
+
+variables:
+	GIT_SUBMODULE_STRATEGY: recursive
+
+build_linux:
+	stage: build
+	script:
+		- cmake -S . -B build/build-linux
+		- cmake --build build/build-linux
+		- test -f build/build-linux/ParticleSim_C
+	artifacts:
+		name: "particlesim-linux-$CI_COMMIT_REF_SLUG"
+		paths:
+			- build/build-linux/ParticleSim_C
+		expire_in: 1 week
+
+build_windows:
+	stage: build
+	script:
+		- cmake -S . -B build/build-win -G Ninja -DCMAKE_TOOLCHAIN_FILE=build/toolchain-mingw64.cmake
+		- cmake --build build/build-win
+		- test -f build/build-win/ParticleSim_C.exe
+	artifacts:
+		name: "particlesim-windows-$CI_COMMIT_REF_SLUG"
+		paths:
+			- build/build-win/ParticleSim_C.exe
+		expire_in: 1 week
+
+release:
+	stage: release
+	image: registry.gitlab.com/gitlab-org/release-cli:latest
+	needs:
+		- job: build_linux
+			artifacts: true
+		- job: build_windows
+			artifacts: true
+	rules:
+		- if: '$CI_COMMIT_TAG'
+	script:
+		- echo "Creating release for $CI_COMMIT_TAG"
+	release:
+		tag_name: "$CI_COMMIT_TAG"
+		name: "Release $CI_COMMIT_TAG"
+		description: "Automated release for $CI_COMMIT_TAG"
+		assets:
+			links:
+				- name: "ParticleSim_C (Linux)"
+					url: "$CI_PROJECT_URL/-/jobs/artifacts/$CI_COMMIT_TAG/raw/build/build-linux/ParticleSim_C?job=build_linux"
+				- name: "ParticleSim_C.exe (Windows)"
+					url: "$CI_PROJECT_URL/-/jobs/artifacts/$CI_COMMIT_TAG/raw/build/build-win/ParticleSim_C.exe?job=build_windows"
