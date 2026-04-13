@@ -56,5 +56,5 @@ release:
       links:
         - name: "ParticleSim_C-linux-x86_64-${CI_COMMIT_TAG}"
           url: "${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/raw/build/build-linux/ParticleSim_C?job=build_linux"
-        - name: "ParticleSim_C.exe-windows_64-bit-${CI_COMMIT_TAG}"
+        - name: "ParticleSim_C.exe-windows_x64-${CI_COMMIT_TAG}"
           url: "${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/raw/build/build-win/ParticleSim_C.exe?job=build_win"
