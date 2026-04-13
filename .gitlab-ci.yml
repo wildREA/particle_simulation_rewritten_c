@@ -17,7 +17,7 @@ build_linux:
     - cmake --build build/build-linux
     - test -f build/build-linux/ParticleSim_C
   artifacts:
-    name: "particlesim-linux-$CI_COMMIT_REF_SLUG"
+    name: "particlesim-linux-${CI_COMMIT_REF_SLUG}"
     paths:
       - build/build-linux/ParticleSim_C
     expire_in: 1 week
@@ -31,7 +31,7 @@ build_windows:
     - cmake --build build/build-win
     - test -f build/build-win/ParticleSim_C.exe
   artifacts:
-    name: "particlesim-windows-$CI_COMMIT_REF_SLUG"
+    name: "particlesim-windows-${CI_COMMIT_REF_SLUG}"
     paths:
       - build/build-win/ParticleSim_C.exe
     expire_in: 1 week
