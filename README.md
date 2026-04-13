@@ -34,6 +34,7 @@ Core runtime flow:
 
 - Language (minimum): C99
 - Build system: CMake (primary), GCC/Clang command-line build (supported)
+- Cross-Compiler: Ninja
 - Standard library usage:
 	- memory management (`realloc`, `free`)
 	- timing/random (`time`, `srand`, `rand`)
